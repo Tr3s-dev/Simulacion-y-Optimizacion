@@ -73,11 +73,11 @@ export default function AppLayout({
           <Separator />
           <div className="flex justify-between w-full">
             <span className="text-xs text-muted-foreground">
-              &copy; 2G Producciones - {new Date().getFullYear()}
+              &copy; Company - {new Date().getFullYear()}
             </span>
             <span className="text-xs text-muted-foreground hover:underline">
-              <Link target="new" to={"https://www.2gproducciones.com"}>
-                www.2gproducciones.com
+              <Link target="new" to={"https://www.company.com"}>
+                www.company.com
               </Link>
             </span>
           </div>

@@ -20,7 +20,11 @@ export interface MontecarloResults {
   promedioServicios: number;
 }
 
-export function calcularMontecarlo({ numSimulations, lambda, mu }: MontecarloParams): MontecarloResults {
+export function calcularMontecarlo({
+  numSimulations,
+  lambda,
+  mu,
+}: MontecarloParams): MontecarloResults {
   const rows: MontecarloResultRow[] = [];
   let totalTiempoEnSistema = 0;
   let totalLlegadas = 0;

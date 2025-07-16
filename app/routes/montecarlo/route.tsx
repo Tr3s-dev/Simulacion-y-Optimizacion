@@ -28,7 +28,9 @@ import MM1ResultsDisplay, {
   calculateMM1,
   MM1Results,
 } from "~/components/commons/MM1ResultsDisplay";
-import MontecarloForm, { MontecarloParams } from "~/components/commons/MontecarloForm";
+import MontecarloForm, {
+  MontecarloParams,
+} from "~/components/commons/MontecarloForm";
 import MontecarloResultsDisplay from "~/components/commons/MontecarloResultsDisplay";
 import { calcularMontecarlo } from "~/lib/montecarloSim";
 

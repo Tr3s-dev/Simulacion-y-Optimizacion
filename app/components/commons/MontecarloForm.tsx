@@ -69,7 +69,9 @@ const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
               value={numSimulations}
               onChange={handleChangeNumSim}
             />
-            <div className="text-sm mt-2">Cantidad de iteraciones de la simulación</div>
+            <div className="text-sm mt-2">
+              Cantidad de iteraciones de la simulación
+            </div>
           </CardContent>
         </Card>
         <Card className="w-80 flex flex-col justify-between">
@@ -84,7 +86,9 @@ const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
               value={lambda}
               onChange={handleChangeLambda}
             />
-            <div className="text-sm mt-2">Número promedio de llegadas por unidad de tiempo</div>
+            <div className="text-sm mt-2">
+              Número promedio de llegadas por unidad de tiempo
+            </div>
           </CardContent>
         </Card>
         <Card className="w-80 flex flex-col justify-between">
@@ -99,13 +103,13 @@ const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
               value={mu}
               onChange={handleChangeMu}
             />
-            <div className="text-sm mt-2">Número promedio de servicios por unidad de tiempo</div>
+            <div className="text-sm mt-2">
+              Número promedio de servicios por unidad de tiempo
+            </div>
           </CardContent>
         </Card>
       </div>
-      {error && (
-        <div className="text-red-600 font-semibold mt-4">{error}</div>
-      )}
+      {error && <div className="text-red-600 font-semibold mt-4">{error}</div>}
       <Button
         type="submit"
         className="mt-6 w-[40rem]"

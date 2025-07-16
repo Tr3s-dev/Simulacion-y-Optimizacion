@@ -1,6 +1,10 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { MontecarloResultRow, MontecarloResults, MontecarloParams } from "./montecarloSim";
+import {
+  MontecarloResultRow,
+  MontecarloResults,
+  MontecarloParams,
+} from "./montecarloSim";
 
 export function generateMontecarloPDF({
   rows,
@@ -24,7 +28,11 @@ export function generateMontecarloPDF({
     body: [
       [
         `Número de simulaciones: ${params.numSimulations}\nTasa de llegada: ${params.lambda}\nTasa de servicio: ${params.mu}`,
-        `Promedio tiempo en sistema: ${results.promedioTiempoEnSistema.toFixed(4)}\nPromedio llegadas: ${results.promedioLlegadas.toFixed(4)}\nPromedio servicios: ${results.promedioServicios.toFixed(4)}`,
+        `Promedio tiempo en sistema: ${results.promedioTiempoEnSistema.toFixed(
+          4
+        )}\nPromedio llegadas: ${results.promedioLlegadas.toFixed(
+          4
+        )}\nPromedio servicios: ${results.promedioServicios.toFixed(4)}`,
       ],
     ],
     theme: "grid",
@@ -58,11 +66,18 @@ export function generateMontecarloPDF({
     },
   });
 
-  const lastY = (doc as any).lastAutoTable ? (doc as any).lastAutoTable.finalY + 10 : 140;
+  const lastY = (doc as any).lastAutoTable
+    ? (doc as any).lastAutoTable.finalY + 10
+    : 140;
   autoTable(doc, {
     startY: lastY,
     head: [["Iteración", "Llegada", "Servicio", "Tiempo en sistema"]],
-    body: rows.map((row) => [row.iteracion, row.llegada.toFixed(4), row.servicio.toFixed(4), row.tiempoEnSistema.toFixed(4)]),
+    body: rows.map((row) => [
+      row.iteracion,
+      row.llegada.toFixed(4),
+      row.servicio.toFixed(4),
+      row.tiempoEnSistema.toFixed(4),
+    ]),
     theme: "grid",
     styles: { fontSize: 12, font: "helvetica", cellPadding: 3 },
     headStyles: { fillColor: [41, 128, 185], font: "helvetica", fontSize: 12 },

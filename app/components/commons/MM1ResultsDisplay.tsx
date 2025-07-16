@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { MM1Params } from "./MM1Form";
+import { generateMM1PDF, MM1ProbabilityRow } from "~/lib/mm1Report";
 
 export interface MM1Results {
   rho: number;
@@ -66,7 +67,7 @@ const MM1ResultsDisplay: React.FC<{
 }> = ({ params, results }) => {
   // Calcular la probabilidad acumulada
   let acumulada = 0;
-  const pdfRows = results.probabilities.map((row) => {
+  const pdfRows: MM1ProbabilityRow[] = results.probabilities.map((row) => {
     acumulada += row.Pn;
     return {
       n: row.n,
@@ -76,56 +77,7 @@ const MM1ResultsDisplay: React.FC<{
   });
 
   function handlePrint() {
-    // PDF/print logic (igual que MM1NResultsDisplay)
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Reporte M/M/1 (Sin límite de cola)", 14, 18);
-    doc.setFontSize(12);
-    doc.text(`Tasa de llegada (lambda): ${params.lambda}`, 14, 30);
-    doc.text(`Tasa de servicio (mu): ${params.mu}`, 14, 38);
-    doc.text("Resultados:", 14, 50);
-    doc.text(
-      `Utilización del sistema (rho): ${results.rho.toFixed(4)}`,
-      14,
-      58
-    );
-    doc.text(
-      `Número promedio en el sistema (L): ${results.L.toFixed(4)}`,
-      14,
-      66
-    );
-    doc.text(
-      `Número promedio en la cola (Lq): ${results.Lq.toFixed(4)}`,
-      14,
-      74
-    );
-    doc.text(
-      `Tiempo promedio en el sistema (W): ${results.W.toFixed(4)}`,
-      14,
-      82
-    );
-    doc.text(
-      `Tiempo promedio en la cola (Wq): ${results.Wq.toFixed(4)}`,
-      14,
-      90
-    );
-    doc.text("Distribución de probabilidades (Pn):", 14, 102);
-    autoTable(doc, {
-      startY: 108,
-      head: [["n", "Probabilidad Pn", "Probabilidad acumulada"]],
-      body: pdfRows.map((row) => [
-        row.n,
-        row.Pn.toFixed(6),
-        row.Psn.toFixed(6),
-      ]),
-      styles: { fontSize: 10 },
-      columnStyles: {
-        0: { cellWidth: 20 },
-        1: { cellWidth: 40 },
-        2: { cellWidth: 40 },
-      },
-    });
-    window.open(doc.output("bloburl"), "_blank");
+    generateMM1PDF({ rows: pdfRows, params, results, print: true });
   }
 
   return (
@@ -174,7 +126,7 @@ const MM1ResultsDisplay: React.FC<{
           <button
             type="button"
             className="bg-red-600 text-white px-6 py-2 rounded shadow font-semibold"
-            onClick={() => handlePrint()}
+            onClick={() => generateMM1PDF({ rows: pdfRows, params, results })}
           >
             Generar PDF
           </button>

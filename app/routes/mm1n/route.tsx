@@ -28,6 +28,11 @@ import MM1ResultsDisplay, {
   calculateMM1,
   MM1Results,
 } from "~/components/commons/MM1ResultsDisplay";
+import MMCForm, { MMCParams } from "~/components/commons/MMCForm";
+import MMCNForm, { MMCNParams } from "~/components/commons/MMCNForm";
+import MMCResultsDisplay from "~/components/commons/MMCResultsDisplay";
+import MMCNResultsDisplay from "~/components/commons/MMCNResultsDisplay";
+import { calculateMMCN } from "~/lib/mmcnModel";
 
 // Server Imports
 
@@ -69,6 +74,19 @@ export default function Index() {
     ],
   };
 
+  const [mmcnResults, setMMCNResults] = useState<any | null>(null);
+  const [mmcResults, setMMCResults] = useState<MMCParams | null>(null);
+
+  function handleCalculateMMCN(params: MMCNParams) {
+    const results = calculateMMCN(params);
+    setMMCNResults(results);
+  }
+
+  function handleCalculateMMC(params: MMCParams) {
+    setMMCResults(params);
+    // Aquí iría la función de cálculo real para M/M/c
+  }
+
   return (
     <AppLayout
       breadCrumbPath={[{ href: "/mm1n", text: "Modelo de varios servidores" }]}
@@ -77,7 +95,7 @@ export default function Index() {
       <div className="flex flex-col flex-1 space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">
-            Modelo de varios servidores (M/M/1/N)
+            Modelo de varios servidores (M/M/c/N)
           </h2>
         </div>
         <Tabs defaultValue="with_limits" className="space-y-4">
@@ -86,11 +104,14 @@ export default function Index() {
             <TabsTrigger value="without_limits">Sin limite de cola</TabsTrigger>
           </TabsList>
           <Separator />
-          <TabsContent value="with_limits" className="space-y-4"></TabsContent>
-          <TabsContent
-            value="without_limits"
-            className="space-y-4"
-          ></TabsContent>
+          <TabsContent value="with_limits" className="space-y-4">
+            <MMCNForm onCalculate={handleCalculateMMCN} />
+            {mmcnResults && <MMCNResultsDisplay results={mmcnResults} />}
+          </TabsContent>
+          <TabsContent value="without_limits" className="space-y-4">
+            <MMCForm onCalculate={handleCalculateMMC} />
+            {mmcResults && <MMCResultsDisplay params={mmcResults} />}
+          </TabsContent>
         </Tabs>
       </div>
     </AppLayout>

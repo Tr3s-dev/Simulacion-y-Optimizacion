@@ -28,6 +28,9 @@ import MM1ResultsDisplay, {
   calculateMM1,
   MM1Results,
 } from "~/components/commons/MM1ResultsDisplay";
+import MontecarloForm, { MontecarloParams } from "~/components/commons/MontecarloForm";
+import MontecarloResultsDisplay from "~/components/commons/MontecarloResultsDisplay";
+import { calcularMontecarlo } from "~/lib/montecarloSim";
 
 // Server Imports
 
@@ -69,6 +72,14 @@ export default function Index() {
     ],
   };
 
+  const [params, setParams] = useState<MontecarloParams | null>(null);
+  const [results, setResults] = useState<any | null>(null);
+
+  function handleCalculateMontecarlo(p: MontecarloParams) {
+    setParams(p);
+    setResults(calcularMontecarlo(p));
+  }
+
   return (
     <AppLayout
       breadCrumbPath={[
@@ -81,6 +92,12 @@ export default function Index() {
           <h2 className="text-3xl font-bold tracking-tight">
             Simulación de montecarlo
           </h2>
+        </div>
+        <div className="w-full">
+          <MontecarloForm onCalculate={handleCalculateMontecarlo} />
+          {params && results && (
+            <MontecarloResultsDisplay params={params} results={results} />
+          )}
         </div>
       </div>
     </AppLayout>

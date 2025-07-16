@@ -2,11 +2,19 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../ui/select";
 
 export interface MontecarloParams {
   numSimulations: number;
-  lambda: number;
-  mu: number;
+  numVariables: number;
+  variables: number[];
+  modelo: "poisson" | "exponencial" | "ambas";
 }
 
 interface MontecarloFormProps {
@@ -14,29 +22,27 @@ interface MontecarloFormProps {
 }
 
 const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
-  const [numSimulations, setNumSimulations] = useState("");
-  const [lambda, setLambda] = useState("");
-  const [mu, setMu] = useState("");
+  const [numSimulations, setNumSimulations] = useState(1000);
+  const [numVariables, setNumVariables] = useState(2);
+  const [modelo, setModelo] = useState<"poisson" | "exponencial" | "ambas">(
+    "poisson"
+  );
   const [error, setError] = useState("");
 
   function isValid() {
-    if (!numSimulations || !lambda || !mu) return false;
-    const nSim = parseInt(numSimulations);
-    const lambdaNum = parseFloat(lambda);
-    const muNum = parseFloat(mu);
-    if (isNaN(nSim) || isNaN(lambdaNum) || isNaN(muNum)) return false;
-    if (nSim <= 0 || lambdaNum <= 0 || muNum <= 0) return false;
+    if (!numSimulations || !numVariables) return false;
+    if (numSimulations <= 0 || numVariables <= 0) return false;
     return true;
   }
 
   function handleChangeNumSim(e: React.ChangeEvent<HTMLInputElement>) {
-    setNumSimulations(e.target.value);
+    setNumSimulations(Number(e.target.value));
   }
-  function handleChangeLambda(e: React.ChangeEvent<HTMLInputElement>) {
-    setLambda(e.target.value);
+  function handleChangeNumVars(e: React.ChangeEvent<HTMLInputElement>) {
+    setNumVariables(Number(e.target.value));
   }
-  function handleChangeMu(e: React.ChangeEvent<HTMLInputElement>) {
-    setMu(e.target.value);
+  function handleChangeModelo(value: string) {
+    setModelo(value as any);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -47,9 +53,10 @@ const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
     }
     setError("");
     onCalculate({
-      numSimulations: parseInt(numSimulations),
-      lambda: parseFloat(lambda),
-      mu: parseFloat(mu),
+      numSimulations,
+      numVariables,
+      variables: [], // No se usan valores manuales
+      modelo,
     });
   }
 
@@ -65,7 +72,6 @@ const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
               type="number"
               step="1"
               min="1"
-              placeholder="Ej: 1000"
               value={numSimulations}
               onChange={handleChangeNumSim}
             />
@@ -76,36 +82,40 @@ const MontecarloForm: React.FC<MontecarloFormProps> = ({ onCalculate }) => {
         </Card>
         <Card className="w-80 flex flex-col justify-between">
           <CardHeader>
-            <CardTitle>Tasa de Llegada (λ)</CardTitle>
+            <CardTitle>Cantidad de variables</CardTitle>
           </CardHeader>
           <CardContent>
             <Input
               type="number"
-              step="any"
-              placeholder="Ej: 5.2"
-              value={lambda}
-              onChange={handleChangeLambda}
+              step="1"
+              min="1"
+              value={numVariables}
+              onChange={handleChangeNumVars}
             />
-            <div className="text-sm mt-2">
-              Número promedio de llegadas por unidad de tiempo
-            </div>
+            <div className="text-sm mt-2">Ejemplo: 2 para x1, x2</div>
           </CardContent>
         </Card>
         <Card className="w-80 flex flex-col justify-between">
           <CardHeader>
-            <CardTitle>Tasa de Servicio (μ)</CardTitle>
+            <CardTitle>Tipo de modelo</CardTitle>
           </CardHeader>
           <CardContent>
-            <Input
-              type="number"
-              step="any"
-              placeholder="Ej: 6.0"
-              value={mu}
-              onChange={handleChangeMu}
-            />
-            <div className="text-sm mt-2">
-              Número promedio de servicios por unidad de tiempo
-            </div>
+            <Select
+              value={modelo}
+              onValueChange={(value) =>
+                setModelo(value as "poisson" | "exponencial" | "ambas")
+              }
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Selecciona la distribución" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="poisson">Poisson</SelectItem>
+                <SelectItem value="exponencial">Exponencial</SelectItem>
+                <SelectItem value="ambas">Ambas</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="text-sm mt-2">Selecciona la distribución</div>
           </CardContent>
         </Card>
       </div>

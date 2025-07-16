@@ -98,7 +98,12 @@ export default function Index() {
         <div className="w-full">
           <MontecarloForm onCalculate={handleCalculateMontecarlo} />
           {params && results && (
-            <MontecarloResultsDisplay params={params} results={results} />
+            <MontecarloResultsDisplay
+              numSimulations={params.numSimulations}
+              numVariables={params.numVariables}
+              modelo={params.modelo}
+              resultados={results}
+            />
           )}
         </div>
       </div>

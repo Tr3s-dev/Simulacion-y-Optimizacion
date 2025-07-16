@@ -28,6 +28,7 @@ import MM1ResultsDisplay, {
   calculateMM1,
   MM1Results,
 } from "~/components/commons/MM1ResultsDisplay";
+import BankSimulation from "~/components/simulation/BankSimulation";
 
 // Server Imports
 
@@ -78,18 +79,7 @@ export default function Index() {
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Simulación</h2>
         </div>
-        <Tabs defaultValue="with_limits" className="space-y-4">
-          <TabsList className="w-full grid grid-cols-2">
-            <TabsTrigger value="with_limits">Con limite de cola</TabsTrigger>
-            <TabsTrigger value="without_limits">Sin limite de cola</TabsTrigger>
-          </TabsList>
-          <Separator />
-          <TabsContent value="with_limits" className="space-y-4"></TabsContent>
-          <TabsContent
-            value="without_limits"
-            className="space-y-4"
-          ></TabsContent>
-        </Tabs>
+        <BankSimulation />
       </div>
     </AppLayout>
   );

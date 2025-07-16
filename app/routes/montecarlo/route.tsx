@@ -69,51 +69,19 @@ export default function Index() {
     ],
   };
 
-  const [mm1nResults, setMM1NResults] = useState<MM1NResults | null>(null);
-  const [mm1Results, setMM1Results] = useState<MM1Results | null>(null);
-  const [mm1Params, setMM1Params] = useState<MM1Params | null>(null);
-
-  function handleCalculate(params: MM1NParams) {
-    const results = calculateMM1N(params);
-    setMM1NResults(results);
-  }
-
-  function handleCalculateMM1(params: MM1Params) {
-    setMM1Params(params);
-    const results = calculateMM1(params);
-    setMM1Results(results);
-  }
-
   return (
     <AppLayout
-      breadCrumbPath={[{ href: "/", text: "Modelo de un servidor" }]}
+      breadCrumbPath={[
+        { href: "/montecarlo", text: "Simulación de montecarlo" },
+      ]}
       sidebarOptions={data.sidebar}
     >
       <div className="flex flex-col flex-1 space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">
-            Modelo de un servidor (M/M/1)
+            Simulación de montecarlo
           </h2>
         </div>
-        <Tabs defaultValue="with_limits" className="space-y-4">
-          <TabsList className="w-full grid grid-cols-2">
-            <TabsTrigger value="with_limits">Con limite de cola</TabsTrigger>
-            <TabsTrigger value="without_limits">Sin limite de cola</TabsTrigger>
-          </TabsList>
-          <Separator />
-          <TabsContent value="with_limits" className="space-y-4">
-            <div className="w-full">
-              <MM1NForm onCalculate={handleCalculate} />
-              {mm1nResults && <MM1NResultsDisplay results={mm1nResults} />}
-            </div>
-          </TabsContent>
-          <TabsContent value="without_limits" className="space-y-4">
-            <MM1Form onCalculate={handleCalculateMM1} />
-            {mm1Results && mm1Params && (
-              <MM1ResultsDisplay params={mm1Params} results={mm1Results} />
-            )}
-          </TabsContent>
-        </Tabs>
       </div>
     </AppLayout>
   );

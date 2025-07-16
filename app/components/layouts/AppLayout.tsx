@@ -26,16 +26,14 @@ export default function AppLayout({
   breadCrumbPath,
   children,
   sidebarOptions,
-  userData,
 }: {
   breadCrumbPath: { text: string; href: string }[];
   children: React.ReactNode;
   sidebarOptions: any;
-  userData: any;
 }) {
   return (
     <SidebarProvider>
-      <AppSidebar sidebarOptions={sidebarOptions} userData={userData} />
+      <AppSidebar sidebarOptions={sidebarOptions} />
       <div className="bg-[#fafafa] w-full h-screen p-0 lg:p-3">
         <main
           style={{ boxShadow: "inset 0 0 10px rgba(220,220,220,1)" }}
@@ -60,27 +58,8 @@ export default function AppLayout({
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            <div className="flex h-full font-bold gap-2">
-              <img
-                src="/favicon.ico"
-                alt="2G Admin"
-                className="h-full rounded-sm"
-              />
-              System Name
-            </div>
           </div>
           <div>{children}</div>
-          <Separator />
-          <div className="flex justify-between w-full">
-            <span className="text-xs text-muted-foreground">
-              &copy; Company - {new Date().getFullYear()}
-            </span>
-            <span className="text-xs text-muted-foreground hover:underline">
-              <Link target="new" to={"https://www.company.com"}>
-                www.company.com
-              </Link>
-            </span>
-          </div>
           <Toaster />
         </main>
       </div>

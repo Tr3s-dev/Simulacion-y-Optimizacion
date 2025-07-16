@@ -7,7 +7,6 @@ import { useNavigate } from "@remix-run/react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -22,7 +21,6 @@ import CollapsibleMenuItem from "../commons/CollapsibleMenuItem";
 import {
   Calendar,
   Home,
-  LogOutIcon,
   UserCircleIcon,
   Boxes,
   Info,
@@ -34,16 +32,20 @@ import {
   ClipboardCheck,
   DollarSignIcon,
   HelpCircleIcon,
+  HardDrive,
+  Server,
+  Database,
+  FileChartColumnIncreasing,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 
 const icons = [
   <Calendar />,
-  <Home />,
-  <Boxes />,
-  <Info />,
-  <Settings />,
+  <HardDrive />,
+  <Server />,
+  <Database />,
+  <FileChartColumnIncreasing />,
   <CalendarCheck />,
   <CalendarClock />,
   <DollarSignIcon />,
@@ -56,10 +58,8 @@ const icons = [
 
 export default function AppSidebar({
   sidebarOptions,
-  userData,
 }: {
   sidebarOptions: any;
-  userData: any;
 }) {
   const navigate = useNavigate();
   const fetcher = useFetcher();
@@ -126,27 +126,11 @@ export default function AppSidebar({
     </Sidebar>
   ) : (
     <Sidebar collapsible="icon" variant="inset">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="flex h-12 gap-3 text-nowrap">
-              <UserCircleIcon />
-              <div className="flex flex-col">
-                <span className="text-sm font-bold">{userData.name}</span>
-                <span className="text-xs font-light text-gray-400">
-                  {userData.role}
-                </span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-        <Separator />
-      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {JSON.parse(sidebarOptions).map((option: any) => {
+              {sidebarOptions.map((option: any) => {
                 if (option.type === 1) {
                   return (
                     <SidebarMenuItem>
@@ -175,23 +159,6 @@ export default function AppSidebar({
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <Separator />
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              type="submit"
-              className="flex items-center justify-start font-bold text-nowrap"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <LogOutIcon className="rotate-180" />
-              Salir
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
     </Sidebar>
   );
 }
